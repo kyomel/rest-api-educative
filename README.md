@@ -38,6 +38,3 @@ go run main.go
 - `routes/`: Contains route definitions.
 - `database/`: Handles database connections and operations.
 - `utils/`: Utility functions for configuration and other common tasks.
-
-## License
-This project is licensed under the MIT License.
