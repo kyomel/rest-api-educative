@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"net/http"
 	"rest-api-educative/models"
 	"rest-api-educative/services"
+	"rest-api-educative/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -36,6 +38,14 @@ func GetItemById(c *fiber.Ctx) error {
 }
 
 func CreateItem(c *fiber.Ctx) error {
+	isValid, err := utils.CheckToken(c)
+	if !isValid {
+		return c.Status(http.StatusUnauthorized).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
 	var itemInput *models.ItemRequest = new(models.ItemRequest)
 
 	if err := c.BodyParser(itemInput); err != nil {
@@ -64,6 +74,14 @@ func CreateItem(c *fiber.Ctx) error {
 }
 
 func UpdateItem(c *fiber.Ctx) error {
+	isValid, err := utils.CheckToken(c)
+	if !isValid {
+		return c.Status(http.StatusUnauthorized).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
 	var itemInput *models.ItemRequest = new(models.ItemRequest)
 
 	if err := c.BodyParser(itemInput); err != nil {
@@ -100,6 +118,14 @@ func UpdateItem(c *fiber.Ctx) error {
 }
 
 func DeleteItem(c *fiber.Ctx) error {
+	isValid, err := utils.CheckToken(c)
+	if !isValid {
+		return c.Status(http.StatusUnauthorized).JSON(models.Response[any]{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
 	var itemID string = c.Params("id")
 
 	var result bool = services.DeleteItem(itemID)
